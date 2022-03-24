@@ -1,6 +1,6 @@
 import { Marks } from '~/models/marks'
-import { Student } from '~/models/student'
-import { Subject, SubjectStudent } from '~/models/subject'
+import { SubjectStudent } from '~/models/subject'
+import Vue from 'vue'
 
 export const state = () => ({
   marks: [],
@@ -8,7 +8,7 @@ export const state = () => ({
 })
 
 export const mutations = {
-  setMarksRows(state, payload) {
+  async setMarksRows(state, payload) {
     const students = payload.students
     const subjects = payload.subjects
     const attendance = payload.attendance
@@ -57,6 +57,10 @@ export const mutations = {
     }
 
     state.marks = marksList
+    await this.$localForage.setItem('marks', state.marks)
+  },
+  setMarks(state, marks) {
+    state.marks = marks
   },
   setStudent(state, student) {
     state.selectedStudent = student

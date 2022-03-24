@@ -74,11 +74,12 @@
         </v-col>
       </v-row>
       <v-btn
+        type="button"
         v-if="canSubmit"
         color="primary"
         :loading="submitLoading"
         :disabled="submitLoading"
-        @click="submit"
+        @click.native="submit"
         >Submit</v-btn
       >
 
@@ -208,7 +209,7 @@ export default {
     saveDate(date) {
       this.$refs.menu.save(date)
     },
-    submit() {
+    async submit() {
       if (this.student.adno && this.student.dob) {
         this.submitLoading = true
         const student = this.$store.state.students.students.find(
@@ -217,6 +218,7 @@ export default {
         )
 
         if (student) {
+          await this.$localForage.setItem('selectedStudent', student)
           this.$store.commit('marks/setStudent', student)
           this.$router.push({ path: '/view-result/summary' })
         } else {
@@ -228,8 +230,19 @@ export default {
       }
     },
   },
-  created() {
+  async created() {
     this.getClasses()
+
+    const selectedClass = await this.$localForage.getItem('selectedClass')
+    if (selectedClass) {
+      this.getStudents(selectedClass.googleSheetKey)
+    }
+
+    const selectedStudent = await this.$localForage.getItem('selectedStudent')
+    if (selectedStudent) {
+      this.student.adno = selectedStudent.adno
+      this.student.dob = selectedStudent.dob
+    }
   },
 }
 </script>

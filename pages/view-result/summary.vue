@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="student">
     <h3 class="mb-3">{{ student.name }}</h3>
     <div class="adno d-flex justify-space-between align-center">
       <div>
@@ -11,8 +11,8 @@
         <span>{{ formatDate(student.dob) }}</span>
       </div>
     </div>
-    <summary-marks-table :marks="marks"></summary-marks-table>
-    <div class="my-3">
+    <summary-marks-table v-if="marks" :marks="marks"></summary-marks-table>
+    <div class="my-3" v-if="marks">
       <v-row justify="end">
         <v-col cols="4">
           <div class="total d-flex justify-space-between">

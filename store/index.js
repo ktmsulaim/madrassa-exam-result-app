@@ -18,11 +18,16 @@ export const mutations = {
     }
     state.classes = classList
   },
-  selectClass(state, sheetId) {
+  async selectClass(state, sheetId) {
     if (state.classes && state.classes.length) {
       state.selectedClass = state.classes.find(
         (cls) => cls.googleSheetKey == sheetId
       )
+
+      await this.$localForage.setItem('selectedClass', state.selectedClass)
     }
+  },
+  setClass(state, cls) {
+    state.selectedClass = cls
   },
 }

@@ -11,7 +11,7 @@
     <v-main class="grey lighten-3">
       <v-container>
         <v-row>
-          <v-col cols="12" sm="3">
+          <v-col cols="12" sm="3" v-if="selectedClass">
             <v-sheet rounded="lg" class="pa-3">
               <div class="class-with-division">
                 <span>{{ selectedClass.name + selectedClass.division }}</span>
@@ -19,6 +19,9 @@
               <div>
                 <b>Teacher</b>
                 <p>{{ selectedClass.teacher }}</p>
+              </div>
+              <div class="mt-2 text-center">
+                <v-btn @click="logout" plain color="error">Logout</v-btn>
               </div>
             </v-sheet>
           </v-col>
@@ -65,6 +68,18 @@ export default {
     year() {
       return new Date().getFullYear()
     },
+  },
+  methods: {
+    async logout() {
+      await this.$localForage.clear()
+      this.$router.push({ path: '/' })
+    },
+  },
+  async mounted() {
+    const student = await this.$localForage.getItem('selectedStudent')
+    if (student) {
+      this.$store.commit('marks/setStudent', student)
+    }
   },
 }
 </script>

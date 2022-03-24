@@ -1,17 +1,19 @@
 import moment from 'moment'
 
 export default {
+  data() {
+    return {
+      student: null,
+      marksList: [],
+      selectedClass: null,
+    }
+  },
   computed: {
-    selectedClass() {
-      return this.$store.state.selectedClass
-    },
-    student() {
-      return this.$store.state.marks.selectedStudent
-    },
     marks() {
-      return this.$store.state.marks.marks.find(
-        (mark) => mark.adno == this.student.adno
-      )
+      if (this.student) {
+        const marks = this.marksList.find((ml) => ml.adno == this.student.adno)
+        return marks
+      }
     },
   },
   methods: {
@@ -21,11 +23,17 @@ export default {
       }
     },
   },
-  created() {
-    const student = this.$store.state.marks.selectedStudent
-
+  async created() {
+    const student =
+      this.$store.state.marks.selectedStudent ||
+      (await this.$localForage.getItem('selectedStudent'))
     if (!student) {
       this.$router.push({ path: '/' })
     }
+
+    this.student = student
+
+    this.marksList = await this.$localForage.getItem('marks')
+    this.selectedClass = await this.$localForage.getItem('selectedClass')
   },
 }
