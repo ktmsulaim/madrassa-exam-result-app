@@ -8,15 +8,13 @@
     <div class="mt-3" v-else>
       <v-row>
         <v-col>
-          <v-select
-            dense
-            label="Select class"
-            :items="classes"
-            outlined
-            :disabled="loading"
+          <label for="">Select class</label>
+          <vue-select
+            @input="getStudents"
+            label="text"
+            :options="classesForSelect"
             v-model="selectedClass"
-            @change="getStudents"
-          ></v-select>
+          ></vue-select>
         </v-col>
       </v-row>
       <v-row v-if="selectedClass">
@@ -122,16 +120,12 @@ export default {
       submitLoading: false,
       notificationText: '',
       snackbar: false,
+      classes: [],
     }
   },
   computed: {
-    classes() {
-      return this.$store.state.classes
-        ? this.$store.state.classes.map((cls) => ({
-            value: cls.googleSheetKey,
-            text: cls.name + cls.division,
-          }))
-        : []
+    classesForSelect() {
+      return this.$store.state.classesForSelect
     },
     students() {
       return this.$store.state.students.students
@@ -164,7 +158,8 @@ export default {
         .catch((err) => console.error(err))
         .finally(() => (this.loading = false))
     },
-    getStudents(id) {
+    getStudents(selectedClass) {
+      const id = selectedClass.value
       if (id) {
         this.loading = true
 
@@ -232,6 +227,8 @@ export default {
   },
   async created() {
     this.getClasses()
+
+    await this.$nextTick()
 
     const selectedClass = await this.$localForage.getItem('selectedClass')
     if (selectedClass) {

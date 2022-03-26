@@ -8,7 +8,8 @@
               <Nuxt />
             </v-sheet>
             <div class="mt-2 text-sm" id="footer">
-              &copy; Izzathul Islam Madrassa <span>{{ year }}</span>
+              &copy; Izzathul Islam Higher Secondary Madrassa
+              <span>{{ year }}</span>
             </div>
           </v-col>
         </v-row>

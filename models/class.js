@@ -3,7 +3,7 @@ export class Class {
     this.name = name
     this.division = division
     this.teacher = teacher
-    this.publish = publish
     this.googleSheetKey = googleSheetKey
+    this.publish = publish
   }
 }
