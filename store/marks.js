@@ -49,7 +49,8 @@ export const mutations = {
             rows[row][markCol],
             rows[row][markCol + 1],
             rows[row][markCol + 2],
-            rows[row][markCol + 3]
+            rows[row][markCol + 3],
+            parseInt(rows[row][markCol + 4])
           )
         )
         row++

@@ -1,20 +1,10 @@
 <template>
   <div v-if="student">
-    <h3 class="mb-3">{{ student.name }}</h3>
-    <div class="adno d-flex justify-space-between align-center">
-      <div>
-        <b>Admission Number</b>
-        <span class="mr-2">{{ student.adno }}</span>
-      </div>
-      <div>
-        <b>Date of birth</b>
-        <span>{{ formatDate(student.dob) }}</span>
-      </div>
-    </div>
+    <student-details :student="student"></student-details>
     <summary-marks-table v-if="marks" :marks="marks"></summary-marks-table>
     <div class="my-3" v-if="marks">
       <v-row justify="end">
-        <v-col cols="4">
+        <v-col lg="5" md="7" sm="12">
           <div class="total d-flex justify-space-between">
             <b>Total</b>
             <span>{{ marks.totalMarks }}</span>
@@ -22,6 +12,17 @@
           <div class="total d-flex justify-space-between">
             <b>Rank</b>
             <span>{{ marks.rank }}</span>
+          </div>
+          <div class="total d-flex justify-space-between">
+            <b>Result</b>
+            <span
+              class="text-caption"
+              :class="{
+                'red--text': !marks.promoted,
+                'green--text': marks.promoted,
+              }"
+              >{{ marks.promoted ? 'Promoted' : 'Not promoted' }}</span
+            >
           </div>
         </v-col>
       </v-row>
@@ -39,16 +40,6 @@ export default {
 </script>
 
 <style lang="scss">
-.adno {
-  color: #444;
-  background: #f9f9f9;
-  padding: 5px;
-}
-
-.adno b {
-  margin-right: 8px;
-}
-
 .total {
   margin-bottom: 5px;
   font-size: 1rem;
@@ -57,11 +48,5 @@ export default {
 
 .total b {
   margin-right: 15px;
-}
-
-@media screen and (max-width: 600px) {
-  .adno b {
-    display: block;
-  }
 }
 </style>

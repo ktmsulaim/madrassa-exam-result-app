@@ -1,5 +1,3 @@
-import moment from 'moment'
-
 export default {
   data() {
     return {
@@ -16,13 +14,6 @@ export default {
       }
     },
   },
-  methods: {
-    formatDate(date, format = 'DD-MM-YYYY') {
-      if (date) {
-        return moment(date).format(format)
-      }
-    },
-  },
   async created() {
     const student =
       this.$store.state.marks.selectedStudent ||
@@ -35,5 +26,6 @@ export default {
 
     this.marksList = await this.$localForage.getItem('marks')
     this.selectedClass = await this.$localForage.getItem('selectedClass')
+    await this.$nextTick()
   },
 }

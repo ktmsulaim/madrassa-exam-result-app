@@ -1,38 +1,48 @@
 <template>
   <div v-if="student">
-    <p>Coming soon</p>
-    <!-- <div v-if="selectedClass">
-      <p><b>Class:</b> {{ selectedClass.name }}</p>
-      <p><b>Division:</b> {{ selectedClass.division }}</p>
-      <p><b>Teacher:</b> {{ selectedClass.teacher }}</p>
+    <student-details :student="student"></student-details>
+
+    <div v-if="marks" class="mt-3">
+      <v-expansion-panels>
+        <v-expansion-panel
+          v-for="(mark, index) in marks.studentSubjects"
+          :key="index"
+        >
+          <v-expansion-panel-header>
+            {{ mark.subject.name }}
+          </v-expansion-panel-header>
+          <v-expansion-panel-content>
+            <detailed-marks :mark="mark"></detailed-marks>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
+
+      <div class="mt-3">
+        <div class="statistics">
+          <b>Total possible marks:</b> <span>{{ totalPossibleMarks }}</span>
+        </div>
+        <div class="statistics">
+          <b>Marks:</b> <span>{{ marks.totalMarks }}</span>
+        </div>
+        <div class="statistics">
+          <b>Percentage:</b> <span>{{ marks.percentage }}%</span>
+        </div>
+        <div class="statistics">
+          <b>Number of students:</b> <span>{{ marksList.length }}</span>
+        </div>
+        <div class="statistics">
+          <b>Rank:</b> <span>{{ marks.rank }}</span>
+        </div>
+        <div class="statistics">
+          <b>Number of working days:</b>
+          <span v-if="selectedClass">{{ selectedClass.workingDays }}</span>
+        </div>
+        <div class="statistics">
+          <b>Attendance:</b>
+          <span>{{ marks.attendance }}</span>
+        </div>
+      </div>
     </div>
-    <h3>{{ student.name }}</h3>
-    <v-simple-table>
-      <template v-slot:default>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Subject</th>
-            <th>Marks</th>
-            <th>Grace marks</th>
-            <th>Total</th>
-            <th>Attendance</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(mark, i) in marks.studentSubjects" :key="i">
-            <td>{{ formatDate(mark.subject.examDate) }}</td>
-            <td>{{ mark.subject.name }}</td>
-            <td>{{ mark.marks }}</td>
-            <td>{{ mark.graceMarks }}</td>
-            <td>{{ parseInt(mark.marks) + parseInt(mark.graceMarks) }}</td>
-            <td>{{ mark.attended }}</td>
-            <td>Passed</td>
-          </tr>
-        </tbody>
-      </template>
-    </v-simple-table> -->
   </div>
 </template>
 
@@ -46,6 +56,17 @@ export default {
   },
   layout: 'dashboard',
   mixins: [result],
+  computed: {
+    totalPossibleMarks() {
+      let marks = 0
+
+      for (const subject of this.marks.studentSubjects) {
+        marks += subject.subject.maxMarks
+      }
+
+      return marks
+    },
+  },
   methods: {
     formatDate(date) {
       if (date) {
@@ -57,4 +78,9 @@ export default {
 </script>
 
 <style>
+.statistics {
+  padding: 8px;
+  background: #f9f9f9;
+  border-bottom: 1px solid #efefef;
+}
 </style>

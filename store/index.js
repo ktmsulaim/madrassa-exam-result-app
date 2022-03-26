@@ -14,7 +14,14 @@ export const mutations = {
       rows.forEach((row, index) => {
         if (index > 0) {
           classList.push(
-            new Class(row[0], row[1], row[2], row[3], parseInt(row[4]))
+            new Class(
+              row[0],
+              row[1],
+              row[2],
+              row[3],
+              parseInt(row[4]),
+              parseInt(row[5])
+            )
           )
         }
       })
