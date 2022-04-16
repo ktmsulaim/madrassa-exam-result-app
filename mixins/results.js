@@ -26,6 +26,14 @@ export default {
 
     this.marksList = await this.$localForage.getItem('marks')
     this.selectedClass = await this.$localForage.getItem('selectedClass')
+
+    let students = this.$store.state.students.students
+
+    if (!students) {
+      students = await this.$localForage.getItem('students')
+      this.$store.commit('students/setStudentsModel', students)
+    }
+
     await this.$nextTick()
   },
 }

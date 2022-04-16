@@ -7,7 +7,7 @@
     </div>
     <div class="mt-3" v-else>
       <v-row>
-        <v-col>
+        <v-col v-if="classesForSelect && classesForSelect.length">
           <label for="">Select class</label>
           <vue-select
             @input="getStudents"
@@ -15,6 +15,10 @@
             :options="classesForSelect"
             v-model="selectedClass"
           ></vue-select>
+        </v-col>
+        <v-col v-else>
+          <p>Sorry! the service is not available now!</p>
+          <v-btn plain @click="getClasses">Refresh</v-btn>
         </v-col>
       </v-row>
       <v-row v-if="selectedClass">
